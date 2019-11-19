@@ -139,8 +139,6 @@
           </div>
         </div> -->
       </div>
-<<<<<<< HEAD
-=======
     </div>
     <!-- <div class="section">
       <div class="container">
@@ -150,9 +148,6 @@
         <h3 class="title">About me</h3>
         <h5 class="description">An artist of considerable range, Ryan — the name taken by Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs and records all of his own music, giving it a warm, intimate feel with a solid groove structure. An artist of considerable range.</h5>
         <div class="row">
-          
-      
-          
         </div>
       </div>
     </div> -->
@@ -163,17 +158,19 @@
         </div> -->
         <div class="card-body">
           <h4 class="card-title">Actions Available</h4>
-          <p class="card-text">Click button to check all current Enrollments.</p>
           <a href="{{url_for('admin.CurrentEnrollmentsAll')}}" class="btn btn-primary">View Enrollments</a>
+          
+          <form class="form" method="POST" action="">
+            {{ form.csrf_token }}
+            {{ form.hidden_tag() }}  
+            {{ form.date(class_="") }}
+            {{ form.submit(class_="btn btn-primary") }}               
+          </form>
+          <!-- <a href="" class="btn btn-primary">Change registration deadline</a> -->
         </div>
-        <!-- <div class="card-footer text-muted mb-2">
-          2 days ago
-        </div> -->
       </div>
-
     <!-- <footer class="footer footer-default">
       <div class=" container ">
->>>>>>> adb7e486b1e3681c434bfb4471cb0a32cd16faeb
         
         <div class="copyright" id="copyright">
           &copy;

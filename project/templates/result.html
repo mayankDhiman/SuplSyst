@@ -127,12 +127,20 @@
                                         <td><b>{{rr[0]}}</b></td>
                                         <td>{{rr[1]}}</td>
                                         {% if rr[2] == 1 %}
-                                            <td><a href="{{url_for('admin.EnrollNew', rollno=rollno, subject=rr[0])}}">Register Supplement</a></td>
+                                            {% if  (flag) %}
+                                                <td><a href="{{url_for('admin.EnrollNew', rollno=rollno, subject=rr[0])}}">Register Supplement</a></td>
+                                            {% else %}
+                                                <td>You missed the deadline</td>
+                                            {% endif %}
                                         {% elif rr[2] == 0 %}
                                             <td></td>
                                         {% else %}
-                                            {% if rr[2] == 2 %}                        
-                                                <td>Already registered & Pay<a href="{{url_for('admin.paymentpage', rollno=rollno, subject=rr[0])}}">(Pay now)</a></td>
+                                            {% if rr[2] == 2 %}
+                                                {% if  (flag) %}
+                                                    <td>Already registered & Pay<a href="{{url_for('admin.paymentpage', rollno=rollno, subject=rr[0])}}">(Pay now)</a></td>
+                                                {% else %}
+                                                    <td>You missed the deadline</td>
+                                                {% endif %}                        
                                             {% elif rr[2] == 3 %}
                                                 <td>Already registered & Paid</td>
                                             {% endif %}

@@ -1,13 +1,15 @@
 from flask import *
 from project import db
 from project.model import Student, SupplementaryExam, Teachers, Enrollments, Result
-from project.forms import LoginForm, SupplementaryExamForm, TeachersLoginForm, ResultForm, EnrollNewForm
+from project.forms import LoginForm, SupplementaryExamForm, TeachersLoginForm, ResultForm, EnrollNewForm, ChangeLastDate
 from flask_login import login_user, current_user, logout_user, login_required
 from project.picture_handler import add_profile_pic
 import stripe
 import os
+from datetime import datetime, timedelta
 
 admin = Blueprint('admin',__name__)
+deadline = "--"
 
 stripe_keys = {
   'publishable_key': "pk_test_9hktSLMVKzCue2lLNllW7K0l00AIkzfNCm",
@@ -130,9 +132,16 @@ def TeachersLogin():
 
 @admin.route('/<email>/teachersdashboard', methods=['GET', 'POST'])
 def TeachersDashboard(email):
+    form = ChangeLastDate()
+    if form.validate_on_submit():
+        global deadline
+        deadline = form.date.data        
+        # print('mm\n')
+        # print(deadline)
+    # return render_template('teacherslogin.html', form=form)
     teacher = Teachers.query.filter_by(email=email).first()
     enrollments = Enrollments.query.all()
-    return render_template('teachersdashboard.html', teacher=teacher, enrollments=enrollments)
+    return render_template('teachersdashboard.html', teacher=teacher, enrollments=enrollments, form = form)
 
 @admin.route('/current_enrollments_all')
 def CurrentEnrollmentsAll():
@@ -171,11 +180,21 @@ def ResultDisplay(rollno):
     result = Result.query.filter_by(rollno=rollno).first_or_404()
     resultData = []
     stu_info = Student.query.filter_by(rollno=rollno).first_or_404()
-    
     for i in range(1, 11):
         if eval( "result.sem" +  str(i) +  "!="  "'-1'"):
-            resultData.append(Extract(eval( "result.sem" + str(i) ), result.rollno))
-    return render_template('result.html', resultData = resultData, rollno=result.rollno, stu_info=stu_info)
+            resultData.append(Extract(eval( "result.sem" + str(i) ), result.rollno))    
+    print('nn\n')
+    # deadline = deadline
+    global deadline
+    print(deadline)
+    print(type(deadline))
+    # print(deadline, '18 Nov 2019', deadline == '18 Nov 2019')
+    declarationDate = datetime.strptime(str(deadline), '%d %b %Y')
+    # print("ddate ", declarationDate)
+    now = datetime.now()
+    flag = (now < declarationDate)
+    print(flag)
+    return render_template('result.html', resultData = resultData, rollno=result.rollno, stu_info=stu_info, flag=flag)
     
 @admin.route('/<rollno>/<subject>/enrollnew', methods=['GET', 'POST'])
 def EnrollNew(rollno, subject):

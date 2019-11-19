@@ -61,3 +61,7 @@ class EnrollNewForm(FlaskForm):
     subject = StringField('Subject', validators=[DataRequired()], render_kw={"readonly":True, "placeholder":"Subject"})
     password = PasswordField('Subject', validators=[DataRequired()], render_kw={"placeholder":"Password"})
     submit = SubmitField('Enroll Now')
+
+class ChangeLastDate(FlaskForm):
+    date = StringField('Last Date', validators=[DataRequired()], render_kw={"placeholder":"DD Nov YY"})
+    submit = SubmitField('Change Date')
