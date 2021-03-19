@@ -8,4 +8,4 @@ alembic==0.9.9
 Werkzeug==0.14.1
 Flask_WTF==0.14.2
 Flask_Login==0.4.1
-Pillow==6.2.1
+Pillow==8.1.1
